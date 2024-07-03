@@ -1,0 +1,11 @@
+services:
+  web:
+    image: 'nginx:latest'
+    #ports:
+    #  - 80:80
+    deploy:
+      mode: replicated
+      replicas: 3
+
+  db:
+    image: 'redis:latest'

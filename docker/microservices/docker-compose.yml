@@ -1,0 +1,27 @@
+services:
+  api:
+    build: ./api
+    command: npm run start
+    restart: unless-stopped
+    ports:
+      #Host:Container
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - HOST=http://dockermicroservices.com
+      - MONGODB_URL=mongodb://api_db:27017/api
+    depends_on:
+      - api_db
+
+  api_db:
+    #This service needs to start before the api service starts, since db is supposed to start before the server. If not, service api may crash.
+    #build not required for this service since there is no Dockerfile for the DB connection and we don't need to create any environment for it.
+    image: mongo:latest
+    volumes:
+      #run `docker volume ls` and then `docker inspect <VOLUME NAME>` to find the details of the volume created.
+      - mongodb_api:/data/db
+
+volumes:
+  #This docker_compose.yml file is for production so we don't want to make any changes to the source files. Hence there are no volumes in the
+  #api service
+  mongodb_api:

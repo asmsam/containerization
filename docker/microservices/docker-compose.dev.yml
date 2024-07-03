@@ -1,0 +1,9 @@
+#This docker-compose file is for overriding the api service. Volumes are added here just to be able to make the dev env capable of changing source files
+#Rest will be just copied to this
+#Use `docker-compose -f docker-compose.yml -f docker-compose.dev.yml build` to do this
+services:
+  api:
+    command: npm run dev
+    volumes:
+      #path/in/this/filesystem:src/path/inside/the/container - /usr/src/app is the path used in the Dockerfile
+      - ./api/src/:/usr/src/app/src

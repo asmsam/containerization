@@ -1,0 +1,4 @@
+- Dockerfile inside api folder is responsible for creating the container. Hence we need to build it inside the docker-compose.yml.
+- The configuration and helpers inside api/src folder are responsible for providing assistance to the index.js code inside api/src and define environment parameters, such as process.env.PORT, process.env.HOST, process.env.MONGODB_URL
+- The MONGODB_URL has the service name and the port. The api is the mongodb name that mongoose creates for us. The service can use the reference to other services, like using the api_db in the api environment variable.
+- Every time we build the docker container, the files are copied (using COPY . . command) to the path mentioned in the Dockerfile. Old files are removed and created newly.

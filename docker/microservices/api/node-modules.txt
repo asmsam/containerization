@@ -1,0 +1,4 @@
+Installed packages:
+- npm install
+    - mongoose
+    - nodemon
