@@ -22,10 +22,13 @@ const startServer = () => {
     });
 
     const fluffy = new Kitten({ name: "fluffy" });
-    fluffy.save(function(err, result) {
-	if (err) return console.error(err);
-	console.log(`result : ${result}`)
-    });
+    try {
+        fluffy.save.then(result => {
+	    console.log(`fluffy result : ${result}`)
+	});
+    } catch (err) {
+        console.error(err);
+    }
 };
 
 connectDB()

@@ -1,0 +1,34 @@
+
+MongooseError: Model.prototype.save() no longer accepts a callback
+From this code:
+
+    silence.save(function(err, result) {
+      if (err) return console.error(err);
+      console.log("result", result);
+    });
+
+I would get the error in the title.
+
+Apparently, this is because of changes with mongodb at version 7.x.
+
+My correction to the code is this:
+
+    try {
+        silence.save().then(result => {
+            console.log("result", result);
+        });
+    } catch (err) {
+        console.log(err);
+    }
+
+But I am not a node/javascript programmer.
+
+The output is slightly different than what is shown in the course:
+
+realworld-docker-api-1     | result {
+realworld-docker-api-1     |   name: 'Silence',
+realworld-docker-api-1     |   _id: new ObjectId('658f35cae8a6063ebbc6a6e5'),
+realworld-docker-api-1     |   __v: 0
+realworld-docker-api-1     | }
+
+--------------------------------------------------------------------------------
