@@ -7,12 +7,12 @@ services:
     ports:
       - "3000:3000"
     # Since it fails in creating interactive console / the frontend service, add these
-    stdin_open: true
-    tty: true
-    volumes:
-      - ./frontend/src:/usr/src/app/src/
-    environment:
-      - CHOKIDAR_USEPOLLING=true
+    # stdin_open: true
+    # tty: true
+    #volumes:
+    #  - ./frontend/src:/usr/src/app/src/
+    #environment:
+    #  - CHOKIDAR_USEPOLLING=true
 
   api:
     build: ./api
@@ -40,6 +40,8 @@ services:
       - PORT=3002
       - HOST=http://dockermicroservices.com
       - MONGODB_URL=mongodb://api_db:27017/auth
+    depends_on:
+      - auth_db
 
   api_db:
     #This service needs to start before the api service starts, since db is supposed to start before the server. If not, service api may crash.
