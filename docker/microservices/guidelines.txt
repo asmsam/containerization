@@ -2,6 +2,18 @@
 - The configuration and helpers inside api/src folder are responsible for providing assistance to the index.js code inside api/src and define environment parameters, such as process.env.PORT, process.env.HOST, process.env.MONGODB_URL
 - The MONGODB_URL has the service name and the port. The api is the mongodb name that mongoose creates for us. The service can use the reference to other services, like using the api_db in the api environment variable.
 - Every time we build the docker container, the files are copied (using COPY . . command) to the path mentioned in the Dockerfile. Old files are removed and created newly.
+- The error "Model.prototype.save() no longer accepts a callback" links to the solution given in the udemy under the course video. It has following solution to use async or (working) use futures
+https://stackoverflow.com/questions/75586474/mongoose-stopped-accepting-callbacks-for-some-of-its-functions
 - use `npm init react-app frontend` to create frontend forlder
 After creating the frontend service inside docker-compose.yml, since we have given no Dockerfile that converts it to a service, it will throw an error: 'failed to solve: failed to read dockerfile: open Dockerfile: no such file or directory'
 - On windows, for frontend service, we must add CHOKIDAT_USEPOLLING=true and use react-scripts 4.0.3 in package.json. React-scripts 5.0 + doesn't receive updates/changes hence it won't work
+- Use command 'npm run build' inside frontend dir to create optimized production build. (Basically it will create the build folder)
+- Difference in hot reload and live reload
+Live reloading reloads or refreshes the entire app when a file changes. For example, if you were four links deep into your navigation and saved a change, live reloading would restart the app and load the app back to the initial route.
+Hot reloading only refreshes the files that were changed without losing the state of the app. For example, if you were four links deep into your navigation and saved a change to some styling, the state would not change, but the new styles would appear on the page without having to navigate back to the page you are on because you would still be on the same page.
+Hot reload is not recommended in production.
+- For frontend, in this project, we need to serve only static pages. Hence we don't need the folders inside frontend apart from frontend/build/static (although I have kept them). To install serve package, use `npm install -g serve`. Then run `serve -s build` or to specify port, run `serve -s build -l <port>`.
+- We are using same Dockerfile for dev and production. Inside frontend, we don't need `RUN npm run build` for dev (why?) but it's okay to keep it for dev as well. After that, install the serve package inside the container - add `RUN npm install -g serve`. The options inside docker-compose.yml under frontend service after stdin... are not needed for production
+- use `docker logs <service-name>` to see specific logs of a service if those are not visible after the `docker-compose up (--build)` command.
+- To run in the dev mode, use `docker-compose -f docker-compose.yml -f docker-compose.dev.yml --build` and for production, just `docker-compose up --build`
+- To run any shell command inside a container, use `docker exec -it <container-name> sh`. The src folder will only be available if the dev mode is running via the docker-compose.dev.yml.
