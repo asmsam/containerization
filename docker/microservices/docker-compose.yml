@@ -1,4 +1,19 @@
 services:
+  frontend:
+    build: ./frontend
+    container_name: microservices-frontend
+    command: npm run start #OR npm start
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    # Since it fails in creating interactive console / the frontend service, add these
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./frontend/src:/usr/src/app/src/
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+
   api:
     build: ./api
     container_name: microservices-api
@@ -6,9 +21,9 @@ services:
     restart: unless-stopped
     ports:
       #Host:Container
-      - "3000:3000"
+      - "3001:3001"
     environment:
-      - PORT=3000
+      - PORT=3001
       - HOST=http://dockermicroservices.com
       - MONGODB_URL=mongodb://api_db:27017/api
     depends_on:
@@ -20,9 +35,9 @@ services:
     command: npm run start
     restart: unless-stopped
     ports:
-      - "3001:3001"
+      - "3002:3002"
     environment:
-      - PORT=3001
+      - PORT=3002
       - HOST=http://dockermicroservices.com
       - MONGODB_URL=mongodb://api_db:27017/auth
 
@@ -39,10 +54,9 @@ services:
     image: mongo:latest
     container_name: microservices-auth-db
     volumes:
-      - mongodb_api:/data/db
+      - mongodb_auth:/data/db
 
 volumes:
-  #This docker_compose.yml file is for production so we don't want to make any changes to the source files. Hence there are no volumes in the
-  #api service
+  #This docker_compose.yml file is for production so we don't want to make any changes to the source files. Hence there are no volumes in the api service
   mongodb_api:
   mongodb_auth:
