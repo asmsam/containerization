@@ -2,11 +2,11 @@ services:
   frontend:
     build: ./frontend
     container_name: microservices-frontend
-    command: npm run start #OR npm start
+    command: serve -s build -l 3000 #npm run start #OR npm start
     restart: unless-stopped
-    ports:
-      - "3000:3000"
-    # Since it fails in creating interactive console / the frontend service, add these
+    #ports:
+    #  - "3000:3000"
+    # Since it fails in creating interactive console / the frontend service, add these (to the dev docker-compose)
     # stdin_open: true
     # tty: true
     #volumes:
@@ -57,6 +57,16 @@ services:
     container_name: microservices-auth-db
     volumes:
       - mongodb_auth:/data/db
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: microservices-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf.prod:/etc/nginx/conf.d/nginx.conf #To use this file inside the container. Where did this path come from?
+    depends_on:
+      - frontend
 
 volumes:
   #This docker_compose.yml file is for production so we don't want to make any changes to the source files. Hence there are no volumes in the api service

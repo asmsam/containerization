@@ -17,3 +17,11 @@ Hot reload is not recommended in production.
 - use `docker logs <service-name>` to see specific logs of a service if those are not visible after the `docker-compose up (--build)` command.
 - To run in the dev mode, use `docker-compose -f docker-compose.yml -f docker-compose.dev.yml --build` and for production, just `docker-compose up --build`
 - To run any shell command inside a container, use `docker exec -it <container-name> sh`. The src folder will only be available if the dev mode is running via the docker-compose.dev.yml.
+- nginx is a proxy that stands between the host of the production or the domain name and the user requests. 80 is by default the port that the requests go to. How do we transfer each request made to the services we made - using nginx.
+- Use `ps aux` to view the running processes in BSD. When using BSD-style options with the ps command, you must exclude the dash (-), however, you can group your options. For example, notice the ps aux command’s options; aux is formatted in the BSD style.
+- Inside the nginx.conf.<mode> where mode is prod or dev, we write location, with a '/' which means all the requests will be dealt with under this section. If we have any specific request, eg. api service, we proceed it with api like - 'location /api {}'
+Proxy pass is the direction of the requests to certain host.
+- Docker-compose allows us to build URLs (such as https//frontend:3000 in nginx config prod) which are not exposed to the world / is not accessible by any DNS system. This is the 'killer' feature of docker-compose.
+- Do not put a colon inside the nginx.conf file
+- To route the traffic to a specific host used inside the docker-compose.yml, use the host file and route the localhost 127.0.0.1 to dockermicroservices.com
+- Since inside nginx/nginx.conf.prod, we have directed all the traffic to fronted:3000, we don't need to explicitely write the ports in the docker-compose.yml. The service:port kind of configuration in the proxy_pass exposes that port.
