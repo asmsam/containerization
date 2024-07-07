@@ -25,3 +25,10 @@ Proxy pass is the direction of the requests to certain host.
 - Do not put a colon inside the nginx.conf file
 - To route the traffic to a specific host used inside the docker-compose.yml, use the host file and route the localhost 127.0.0.1 to dockermicroservices.com
 - Since inside nginx/nginx.conf.prod, we have directed all the traffic to fronted:3000, we don't need to explicitely write the ports in the docker-compose.yml. The service:port kind of configuration in the proxy_pass exposes that port.
+- API service needs to be used by the frontend and the auth service needs to be used by the API and the frontend.
+    - Frontend service communicates with the API service to get data from the DB
+    - If any user information is required, communication with auth service is required, which checks DB reconrds with auth_db.
+    Eg. checking current user - if the same person is the author of the post, then we allow them to edit or do more operations. In this case, either frontend can communicate with API to get the authorization or can communicate directly with auth service for authentication.
+- Between the services, to communicate using docker network, we can use environment variables such as to define the URLs for auth to access the frontend.
+- Axios node package : Promise based HTTP client for browser and node.js. It is to exchange data. Install it using `npm install axios` inside API.
+

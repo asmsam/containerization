@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const { port, host, db } = require("./configuration");
+const axios = require("axios")
+const { port, host, db, authApiUrl } = require("./configuration");
 const { connectDB } = require("./helpers/db");
 
 const app = express();
@@ -14,16 +15,26 @@ app.get("/test", (req, res) => {
     res.send("API server is running!");
 });
 
+app.get("/testcurrentuser", (req, res) => {
+    axios.get(authApiUrl + '/currentUser').then( response => { //currentUser is fetched from the authentication service - but how?
+	res.json({
+	    testcurrentuser: true,
+            currentUserFromAuth: respnse.data
+	});
+    });
+});
+
 const startServer = () => {
     app.listen(port, () => {
         console.log(`Started the API service on port ${port}`);
 	console.log(`The Host is ${host}`);
 	console.log(`The Database URL is ${db}`);
+	console.log(`The auth URL is ${authApiUrl}`)
     });
 
     const fluffy = new Kitten({ name: "fluffy" });
     try {
-        fluffy.save.then(result => {
+        fluffy.save().then(result => {
 	    console.log(`fluffy result : ${result}`)
 	});
     } catch (err) {

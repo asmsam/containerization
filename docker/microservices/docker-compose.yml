@@ -26,6 +26,7 @@ services:
       - PORT=3001
       - HOST=http://dockermicroservices.com
       - MONGODB_URL=mongodb://api_db:27017/api
+      - AUTH_API_URL=http://auth:3002/api # Accessing auth service from API service using the auth service name and port
     depends_on:
       - api_db
 
@@ -34,8 +35,8 @@ services:
     container_name: microservices-auth
     command: npm run start
     restart: unless-stopped
-    ports:
-      - "3002:3002"
+    # ports: # We don't need to explicitely mention these ports since we are using the AUTH_API_URL in which port 3002
+    #  - "3002:3002"
     environment:
       - PORT=3002
       - HOST=http://dockermicroservices.com
