@@ -13,6 +13,8 @@ services:
     #  - ./frontend/src:/usr/src/app/src/
     #environment:
     #  - CHOKIDAR_USEPOLLING=true
+    networks:
+      - my-network
 
   api:
     build: ./api
@@ -29,20 +31,25 @@ services:
       - AUTH_API_URL=http://auth:3002/api # Accessing auth service from API service using the auth service name and port
     depends_on:
       - api_db
+    networks:
+      - my-network
 
   auth:
     build: ./auth
     container_name: microservices-auth
     command: npm run start
     restart: unless-stopped
-    # ports: # We don't need to explicitely mention these ports since we are using the AUTH_API_URL in which port 3002
-    #  - "3002:3002"
+    ports: # We don't need to explicitely mention these ports since we are using the AUTH_API_URL in which port 3002
+      - "3002:3002"
     environment:
       - PORT=3002
       - HOST=http://dockermicroservices.com
       - MONGODB_URL=mongodb://api_db:27017/auth
+      - API_URL=http://api:3001/api
     depends_on:
       - auth_db
+    networks:
+      - my-network
 
   api_db:
     #This service needs to start before the api service starts, since db is supposed to start before the server. If not, service api may crash.
@@ -52,12 +59,16 @@ services:
     volumes:
       #run `docker volume ls` and then `docker inspect <VOLUME NAME>` to find the details of the volume created.
       - mongodb_api:/data/db
+    networks:
+      - my-network
 
   auth_db:
     image: mongo:latest
     container_name: microservices-auth-db
     volumes:
       - mongodb_auth:/data/db
+    networks:
+      - my-network
 
   nginx:
     image: nginx:stable-alpine
@@ -68,8 +79,14 @@ services:
       - ./nginx/nginx.conf.prod:/etc/nginx/conf.d/nginx.conf #To use this file inside the container. Where did this path come from?
     depends_on:
       - frontend
+    networks:
+      - my-network
 
 volumes:
   #This docker_compose.yml file is for production so we don't want to make any changes to the source files. Hence there are no volumes in the api service
   mongodb_api:
   mongodb_auth:
+
+networks: # This is not mandatory to be specified, and a default network with the same driver is created. We can rename the n/w using this -
+  my-network:
+    driver: bridge
