@@ -35,3 +35,13 @@ Proxy pass is the direction of the requests to certain host.
 
 - `docker network` gets created automatically (behind the scenes) and that way the services communicate with each other.
 - By default, 'bridge' is the network used by docker. We can define our own network inside docker-compose as well.
+
+- Frontend doesn't work like the backend where services can easily communicate via the bridge network. It only has access to the host that we have defined inside the hosts file.
+
+- Frontend doesn't work like the backend where services can easily communicate via the bridge network. It only has access to the host that we have defined inside the hosts file.
+- The browser knows only the host that 127.0.0.1 points to (localhost) and the requests can be made easily only on the same domain/sub-domain. Which means by having the IP address of the server and /api endpoint will not work to get the data.
+- For this- Cross Origin Policies (CORS - Cross Origin Resource Sharing) can be referred. 'Same Origin' HTTP requests are answered i.e. same host requests. But by default, browsers disable the CORS requests made from scripts.
+- nginx will serve as a middle-person to understand the requests made to the host/api/endpoint.
+- In its configuration, we need to mention that for the requests coming for the location /api, rewrite the url and route it to the api service. (here the getters inside the api/src/index.js are modified by removing the /api/xxx from the app.get()).
+Eg. By writing in the search bar dockermicroservices.com/api/post, the request will be routed to the service 'posts'.
+- To Do : check how to rewrite URL

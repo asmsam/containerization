@@ -15,7 +15,7 @@ app.get("/test", (req, res) => {
     res.send("API server is running!");
 });
 
-app.get("/testcurrentuser", (req, res) => {
+app.get("/testcurrentuser", (req, res) => { //in frontend/src/App.js to make request from FE, we have directed the request /api/testcurrentuser
     axios.get(authApiUrl + '/currentUser').then( response => { //currentUser is fetched from the authentication service - but how?
 	res.json({
 	    testcurrentuser: true,
@@ -24,7 +24,7 @@ app.get("/testcurrentuser", (req, res) => {
     });
 });
 
-app.get("/api/apidata", (req, res) => {
+app.get("/apidata", (req, res) => { // /api/apidata renamed to /apidata since in the nginx config -> location we have used /api
     res.json({
         apidatafield: true
     });

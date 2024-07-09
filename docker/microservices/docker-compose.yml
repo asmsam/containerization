@@ -21,9 +21,9 @@ services:
     container_name: microservices-api
     command: npm run start
     restart: unless-stopped
-    ports:
+    #ports:
       #Host:Container
-      - "3001:3001"
+      #  - "3001:3001"
     environment:
       - PORT=3001
       - HOST=http://dockermicroservices.com
@@ -39,8 +39,8 @@ services:
     container_name: microservices-auth
     command: npm run start
     restart: unless-stopped
-    ports: # We don't need to explicitely mention these ports since we are using the AUTH_API_URL in which port 3002
-      - "3002:3002"
+    #ports: # We don't need to explicitely mention these ports since we are using the AUTH_API_URL in which port 3002
+    #  - "3002:3002"
     environment:
       - PORT=3002
       - HOST=http://dockermicroservices.com
