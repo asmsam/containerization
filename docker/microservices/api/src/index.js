@@ -19,8 +19,14 @@ app.get("/testcurrentuser", (req, res) => {
     axios.get(authApiUrl + '/currentUser').then( response => { //currentUser is fetched from the authentication service - but how?
 	res.json({
 	    testcurrentuser: true,
-            currentUserFromAuth: respnse.data
+            currentUserFromAuth: response.data
 	});
+    });
+});
+
+app.get("/api/apidata", (req, res) => {
+    res.json({
+        apidatafield: true
     });
 });
 
