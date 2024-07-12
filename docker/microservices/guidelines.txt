@@ -50,3 +50,11 @@ Eg. By writing in the search bar dockermicroservices.com/api/post, the request w
 WebSocketClient.js:13  WebSocket connection to 'ws://dockermicroservices.local:3000/ws' failed
 The nginx.conf.dev file is added with proxy_http_version, proxy_set_header.
 But it is not working.
+
+Deployment:
+- After creating a cloud server, use its IPv4 address and ssh user@<IP> to login to it, install docker and follow the steps to install docker-compose and set user (sudo gpasswd -a <username> docker). Don't use root user in the place of username since it is not a good practice, unless you're the administrator.
+- Install git, create ssh key with `ssh-keygen`, and map the IP address of the server in the hosts file if you don't want to buy a domain name.
+- To run the console detached from the logs, run `docker-compose up -d`, and the services can be checked using docker ps and logs with docker logs <service name>
+
+Docker cleanup:
+- The images <none> are intermediate images, not useful after build is done. So to remove them, (earlier people used to delete them manually), run the command `docker system prune`.
