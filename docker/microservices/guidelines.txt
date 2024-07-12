@@ -45,3 +45,8 @@ Proxy pass is the direction of the requests to certain host.
 - In its configuration, we need to mention that for the requests coming for the location /api, rewrite the url and route it to the api service. (here the getters inside the api/src/index.js are modified by removing the /api/xxx from the app.get()).
 Eg. By writing in the search bar dockermicroservices.com/api/post, the request will be routed to the service 'posts'.
 - To Do : check how to rewrite URL
+- API service is stateless. Which means that it is independent of any public URL. So the HOST used inside the docker-compose.yml is useful only when we want to redirect a customer to some other URL, otherwise it's not needed.
+- For the error
+WebSocketClient.js:13  WebSocket connection to 'ws://dockermicroservices.local:3000/ws' failed
+The nginx.conf.dev file is added with proxy_http_version, proxy_set_header.
+But it is not working.

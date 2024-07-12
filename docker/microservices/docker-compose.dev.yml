@@ -9,6 +9,9 @@ services:
       - ./api/src/:/usr/src/app/src
 
   frontend:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./frontend
     command: npm run start #The command in package.json is start, not dev
     # Since it fails in creating interactive console / the frontend service, add these
     stdin_open: true
@@ -18,4 +21,12 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
 
+  auth:
+    command: npm run dev
+    volumes:
+      #path/in/this/filesystem:src/path/inside/the/container - /usr/src/app is the path used in the Dockerfile
+      - ./auth/src/:/usr/src/app/src
 
+  nginx:
+    volumes:
+      - ./nginx/nginx.conf.dev:/etc/nginx/conf.d//nginx.conf

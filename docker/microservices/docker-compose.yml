@@ -1,6 +1,8 @@
 services:
   frontend:
-    build: ./frontend
+    build:
+      dockerfile: Dockerfile.prod
+      context: ./frontend
     container_name: microservices-frontend
     command: serve -s build -l 3000 #npm run start #OR npm start
     restart: unless-stopped
@@ -26,7 +28,7 @@ services:
       #  - "3001:3001"
     environment:
       - PORT=3001
-      - HOST=http://dockermicroservices.com
+      #  - HOST=http://dockermicroservices.com
       - MONGODB_URL=mongodb://api_db:27017/api
       - AUTH_API_URL=http://auth:3002/api # Accessing auth service from API service using the auth service name and port
     depends_on:
@@ -43,7 +45,7 @@ services:
     #  - "3002:3002"
     environment:
       - PORT=3002
-      - HOST=http://dockermicroservices.com
+      #  - HOST=http://dockermicroservices.com
       - MONGODB_URL=mongodb://api_db:27017/auth
       - API_URL=http://api:3001/api
     depends_on:
@@ -79,6 +81,8 @@ services:
       - ./nginx/nginx.conf.prod:/etc/nginx/conf.d/nginx.conf #To use this file inside the container. Where did this path come from?
     depends_on:
       - frontend
+      - auth
+      - api
     networks:
       - my-network
 
