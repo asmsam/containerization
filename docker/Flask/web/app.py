@@ -12,6 +12,8 @@ def checkPostedData(postedData, functionName):
             return 301
         else:
             return 200
+
+@app.route('/add')
 class Add(Resource):
     def post(self):
         #If I am here, then the resouce Add was requested using the method POST
@@ -42,17 +44,23 @@ class Add(Resource):
         }
         return jsonify(retMap)
 
+@app.route('/subtract')
 class Subtract(Resource):
     pass
 
+@app.route('/multiply')
 class Multiply(Resource):
     pass
 
+@app.route('/devide')
 class Divide(Resource):
     pass
 
 
 api.add_resource(Add, "/add")
+api.add_resource(Add, "/subtract")
+api.add_resource(Add, "/multiply")
+api.add_resource(Add, "/divide")
 
 @app.route('/')
 def hello_world():
@@ -60,4 +68,4 @@ def hello_world():
 
 
 if __name__=="__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)

@@ -1,0 +1,6 @@
+services:
+  web-service:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+      
